@@ -77,5 +77,71 @@ namespace FinalProject
         {
             Console.WriteLine($"{Name} is Dead!");
         }
+
+        public Enemy RandomEnemy(Character character)
+        {
+            var enemy01 = new Enemy("Goblin Axe", 100, 0, 10, 10, "Demi-Human");
+            var enemy02 = new Enemy("Goblin Hammer", 150, 0, 15, 20, "Demi-Human");
+            var enemy03 = new Enemy("Goblin Archer", 100, 0, 20, 10, "Demi-Human");
+            var enemy04 = new Enemy("Wolf", 80, 0, 55, 30, "Beast");
+            var enemy05 = new Enemy("Goblin Leader", 250, 0, 70, 65, "Demi-Human");
+            
+            Console.WriteLine("You have found the enemy!");
+            // Random Enemy
+            var random = new Random();
+            var enemyType = random.Next(52);
+            var currentEnemy = enemy01;
+
+            if (enemyType <= 1 || enemyType <= 15)
+            {
+                currentEnemy = enemy01;
+            }
+            else if (enemyType <= 16 || enemyType <= 25)
+            {
+                if (character.playerCurrentSpot >= 5)
+                {
+                    currentEnemy = enemy02;
+                }
+                else
+                {
+                    currentEnemy = enemy01;
+                }
+            }
+            else if (enemyType <= 26 || enemyType <= 35)
+            {
+                if (character.playerCurrentSpot >= 10)
+                {
+                    currentEnemy = enemy03;
+                }
+                else
+                {
+                    currentEnemy = enemy02;
+                }
+            }
+            else if (enemyType <= 36 || enemyType <= 44)
+            {
+                if (character.playerCurrentSpot >= 15)
+                {
+                    currentEnemy = enemy04;
+                }
+                else
+                {
+                    currentEnemy = enemy03;
+                }
+            }
+            else if (enemyType <= 45 || enemyType <= 51)
+            {
+                if (character.playerCurrentSpot >= 20)
+                {
+                    currentEnemy = enemy05;
+                }
+                else
+                {
+                    currentEnemy = enemy04;
+                }
+            }
+
+            return currentEnemy;
+        }
     }
 }

@@ -1,6 +1,3 @@
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-
 namespace FinalProject
 {
     public class Item
@@ -25,6 +22,11 @@ namespace FinalProject
             ArmorDef = armorDef;
             WeaponType = weaponType;
             Equipable = equipable;
+        }
+
+        public void RandomItemDrop()
+        {
+            
         }
     }
 }
