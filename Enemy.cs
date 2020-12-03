@@ -23,7 +23,7 @@ namespace FinalProject
             eType = etype;
         }
 
-        public void Attack(Character opponent)
+        public virtual void Attack(Character opponent)
         {
             
             //var random = new Random();
@@ -58,7 +58,7 @@ namespace FinalProject
             
             
         }
-        public void TakeDamage(int damage)
+        public virtual void TakeDamage(int damage)
         {
             Hp -= damage;
             if (Hp > 0)
@@ -73,7 +73,7 @@ namespace FinalProject
             }
         }
 
-        public void Dead()
+        public virtual void Dead()
         {
             Console.WriteLine($"{Name} is Dead!");
         }
