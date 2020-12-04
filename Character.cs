@@ -18,6 +18,8 @@ namespace FinalProject
         public int ItemCount { get; private set; }
         public int MaxHp { get; private set; }
         public int MaxMana { get; private set; }
+        public int BaseAtk { get; private set; }
+        public int BaseDef { get; private set; }
         public int PlayerCurrentSpot;
 
         private Skill[] Skills;
@@ -46,6 +48,8 @@ namespace FinalProject
             Accessory = new Item("", false, 0,0,0,0,0,false,0);
             Inventory = new List<Item>();
             ItemCount = 1;
+            BaseAtk = Atk + Weapon.WeaponDamage + Accessory.WeaponDamage;
+            BaseDef = Def + Head.ArmorDef + Armor.ArmorDef + Accessory.ArmorDef;
         }
 
         public void AddItem(Item items)
@@ -163,34 +167,28 @@ namespace FinalProject
             Skills = skills;
         }
         
-        public void SetRandomAtk()
+        public int SetRandomAtk()
         {
-            Atk += Weapon.WeaponDamage + Accessory.WeaponDamage;
-            var minAtk = Atk - 10;
-            var maxAtk = Atk + 10;
+            var damage = Atk + Weapon.WeaponDamage + Accessory.WeaponDamage;
+            var minAtk = damage - 10;
+            var maxAtk = damage + 10;
             Random rnd = new Random();
-            Atk = rnd.Next(minAtk, maxAtk);
-            
-            //return Atk;
+            var rndAtk = rnd.Next(minAtk, maxAtk);
+            return damage = rndAtk;
         }
 
-        public void SetRandomDef()
+        public int SetRandomDef()
         {
-            Def += Head.ArmorDef + Armor.ArmorDef + Accessory.ArmorDef;
-            var minDef = Def - 10;
-            var maxDef = Def + 10;
+            var defend = Def + Head.ArmorDef + Armor.ArmorDef + Accessory.ArmorDef;
+            var minDef = defend - 10;
+            var maxDef = defend + 10;
             Random rnd = new Random();
-            Def = rnd.Next(minDef,maxDef);
-            
-            //return Def;
+            var rndDef = rnd.Next(minDef,maxDef);
+            return defend = rndDef;
         }
         public void PhysicalAttack(Enemy opponent)
         {
-            SetRandomAtk();
-            opponent.SetRandomDef();
-            var weponDamage = Weapon.WeaponDamage;
-            var accessoryDamage = Accessory.WeaponDamage;
-            var damage = (Atk + weponDamage + accessoryDamage) - opponent.Def;
+            var damage = (SetRandomAtk() - opponent.SetRandomDef());
             Console.WriteLine($"{Name} Dealing damage to {opponent.Name} {damage} unit!");
             //Console.WriteLine($"player Damage : {damage}");
             if (damage > 0)

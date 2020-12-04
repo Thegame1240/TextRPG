@@ -58,7 +58,7 @@ namespace FinalProject
             // Player select start character //
             while (!characterSelected)
             {
-                Console.WriteLine("Welcome Adventure!");
+                Console.WriteLine();
                 Console.WriteLine("=== Please Chose your character (Type: 1, 2, 3) ===\n 1.Swordman \n 2.Archer \n 3.Magician");
                 var selectedCharacter = Console.ReadLine();
                 switch (selectedCharacter)
@@ -137,7 +137,8 @@ namespace FinalProject
 
             if (player.PlayerCurrentSpot == destination) // To Final Bosss
             {
-                Console.WriteLine("The Final Boss is Coming !"); // TODO: Final Boss 
+                Console.Clear();
+                Console.WriteLine("The Final Boss is Coming !");
                 FinalBoss(player);
             }
             
@@ -145,27 +146,42 @@ namespace FinalProject
             static void IntroGame() // To Start Storyline and Explain the GamePlay
             {
                 Console.Clear();
-                Console.WriteLine("===== Welcome Adventure, You're awake alone in the middle of Forrest Village. ====="); // TODO: Story telling
-                Console.WriteLine("===== While you sleep there is an attack of this village by goblin. ===============");
-                Console.WriteLine("===== The Leader of this village has been captured to the Goblin Camp. ============");
-                Console.WriteLine("===== People are begging you to help the Leader. ==================================");
-                Console.WriteLine("===== Now it's time to begin! =====================================================");
+                Console.WriteLine("===================================================================================");
+                Console.WriteLine("===================================================================================");
+                Console.WriteLine("=====             Welcome to an Adventure Console Text based Game             =====");
+                Console.WriteLine("=================                 Presented by                    =================");
+                Console.WriteLine(@"===    _______    ______   _______    ______    ______   _______   __    __    ===");
+                Console.WriteLine(@"===   |       \  /      \ |       \  /      \  /      \ |       \ |  \  |  \   ===");
+                Console.WriteLine(@"===   | $$$$$$$\|  $$$$$$\| $$$$$$$\|  $$$$$$\|  $$$$$$\| $$$$$$$\| $$\ | $$   ===");
+                Console.WriteLine(@"===   | $$__/ $$| $$  | $$| $$__/ $$| $$   \$$| $$  | $$| $$__| $$| $$$\| $$   ===");
+                Console.WriteLine(@"===   | $$    $$| $$  | $$| $$    $$| $$      | $$  | $$| $$    $$| $$$$\ $$   ===");
+                Console.WriteLine(@"===   | $$$$$$$ | $$  | $$| $$$$$$$ | $$   __ | $$  | $$| $$$$$$$\| $$\$$ $$   ===");
+                Console.WriteLine(@"===   | $$      | $$__/ $$| $$      | $$__/  \| $$__/ $$| $$  | $$| $$ \$$$$   ===");
+                Console.WriteLine(@"===   | $$       \$$    $$| $$       \$$    $$ \$$    $$| $$  | $$| $$  \$$$   ===");
+                Console.WriteLine(@"===   \$$        \$$$$$$  \$$        \$$$$$$   \$$$$$$  \$$   \$$ \$$   \$$.   ===");
+                Console.WriteLine("===================================================================================");
+                Console.WriteLine("===================================================================================");
+                Console.WriteLine();
+                Console.WriteLine("===== Welcome Adventure, You're awake alone in the middle of Forrest Village. =====");
+                Console.WriteLine("=====      While you sleep there is an attack of this village by goblin.      =====");
+                Console.WriteLine("=====     The Leader of this village has been captured to the Goblin Camp.    =====");
+                Console.WriteLine("=====            People are begging you to help the Leader.                   =====");
+                Console.WriteLine("=====                     Now it's time to begin!                             =====");
                 Console.WriteLine("Press any key to start...");
                 Console.ReadKey();
                 Console.Clear();
             }
 
-            static void FinalBoss(Character player) // TODO:
+            static void FinalBoss(Character player) // FinalBossArrive
             {
                 var finalBoss = new Boss("Goblin Lord", 500, 150, 100, 60, "Boss");
-                Console.WriteLine(
-                    $"{finalBoss.Name} Well done Adventure! You come along here \n Now it's time to Die!!");
+                Console.WriteLine($"{finalBoss.Name} Well done Adventure! You come along here \n Now it's time to Die!!");
 
                 while (player.Hp > 0 && finalBoss.Hp > 0)
                 {
                     Console.WriteLine($"=== PLAYER STATUS === \n== Hp: {player.Hp} == MP: {player.Mana} ==");
                     Console.WriteLine($"=== {finalBoss.Name} STATUS === \n== Hp: {finalBoss.Hp} ==");
-                    Console.WriteLine("==== Chose your action ====\n 1.Normal attack \n 2.Use skill \n 3.Use item \n 4.Wait for Action \n 5.Try Escape");
+                    Console.WriteLine("==== Chose your action ====\n 1.Normal attack \n 2.Use skill \n 3.Use item \n 4.Wait for Action ");
                     var playerAction = Console.ReadLine();
 
                     if (playerAction == "1") // Normal Attack
@@ -190,20 +206,11 @@ namespace FinalProject
                     {
                         finalBoss.Attack(player);
                     }
-                    else if (playerAction == "5") // Try Escape
-                    {
-                        var random = new Random();
-                        var escapeChance = random.Next(2);
-                        if (escapeChance == 1)
-                        {
-                            Console.WriteLine("Escape Success!");
-                            PlayerOption(player, finalBoss);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Escape Failed!");
-                        }
-                    }
+                }
+
+                if (finalBoss.IsDead)
+                {
+                    EndGame();
                 }
             }
 
@@ -362,13 +369,13 @@ namespace FinalProject
                 }
                 else if (playerOption == "3") // Check Status
                 {
-                    Console.WriteLine($"Name {player.Name}");
-                    Console.WriteLine($"HP: {player.Hp} MP: {player.Mana}");
-                    Console.WriteLine($"Base Atk: {player.Atk} Base Def: {player.Def}");
-                    Console.WriteLine($"Current Weapon: {player.Weapon.Name}");
-                    Console.WriteLine($"Head: {player.Head.Name}");
-                    Console.WriteLine($"Armor: {player.Armor.Name}");
-                    Console.WriteLine($"Accessory: {player.Accessory.Name}");
+                    Console.WriteLine($"=== Name: {player.Name} ===");
+                    Console.WriteLine($"=== HP: {player.Hp} MP: {player.Mana} ===");
+                    Console.WriteLine($"=== Base Atk: {player.BaseAtk} Base Def: {player.BaseDef} ===");
+                    Console.WriteLine($"=== Current Weapon: {player.Weapon.Name} ===");
+                    Console.WriteLine($"=== Head: {player.Head.Name} ===");
+                    Console.WriteLine($"=== Armor: {player.Armor.Name} ===");
+                    Console.WriteLine($"=== Accessory: {player.Accessory.Name} ===");
                     Console.WriteLine("Press any key to go back...");
                     Console.ReadKey();
                     PlayerOption(player,enemy01);
@@ -391,6 +398,25 @@ namespace FinalProject
                         Environment.Exit(0);
                     }
                 }
+            }
+
+            static void EndGame()
+            {
+                Console.WriteLine("================ This Game is the Final Project of Subject GI161 ==================");
+                Console.WriteLine("=====                              Created by                                 =====");
+                Console.WriteLine("=====  ID: 1620700656 Name: Pongsakorn Soontorn        Section: 2521  No: 3   =====");
+                Console.WriteLine("=====  ID: 1620705069 Name: Ponthakorn Pongsakorntorn  Section: 2521  No: 29  =====");
+                Console.WriteLine("=====  ID: 1620705101 Name: Worawat    Kotchagreang    Section: 2521  No: 30  =====");
+                Console.WriteLine("=====  ID: 1620705184 Name: Wachira    Pedhan          Section: 2521  No: 32  =====");
+                Console.WriteLine("=====  ID: 1621100955 Name: Peerapat   Phongsiang      Section: 2522  No: 30  =====");
+                Console.WriteLine("=====                 Presented to Dr. Wiyada Thitimajshima                   =====");
+                Console.WriteLine("===================================================================================");
+                Console.WriteLine();
+                Console.WriteLine("=====                 The End's              =====");
+                Console.WriteLine("===== You save the Leader of Forrest Village =====");
+                Console.WriteLine("=====         Thanks you all for playing     =====");
+                Console.WriteLine("Press any key to exit...");
+                Console.ReadKey();
             }
         }
     }

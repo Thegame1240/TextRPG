@@ -26,33 +26,31 @@ namespace FinalProject
             ItemDrop = new Item("null",false,0,0,0,0,0,false,0);
         }
         
-        public void SetRandomAtk()
+        public int SetRandomAtk()
         {
-            var minAtk = Atk - 10;
-            var maxAtk = Atk + 10;
+            var damage = Atk;
+            var minAtk = damage - 5;
+            var maxAtk = damage + 20;
             Random rnd = new Random();
-            Atk = rnd.Next(minAtk, maxAtk);
-            
-            //return Atk;
+            var rndDamage = rnd.Next(minAtk, maxAtk);
+            return damage = rndDamage;
         }
 
-        public void SetRandomDef()
+        public int SetRandomDef()
         {
-            var minDef = Def - 10;
-            var maxDef = Def + 10;
+            var defend = Def;
+            var minDef = defend - 10;
+            var maxDef = defend + 10;
             Random rnd = new Random();
-            Def = rnd.Next(minDef,maxDef);
-            
-            //return Def;
+            var rndDef = rnd.Next(minDef,maxDef);
+            return defend = rndDef;
         }
         
         public virtual void Attack(Character opponent)
         {
-            SetRandomAtk();
-            opponent.SetRandomDef();
             if (!IsDead)
             {
-                var damage = Atk - opponent.Def;
+                var damage = SetRandomAtk() - opponent.SetRandomDef();
                 Console.WriteLine($"{Name} dealing damage to {opponent.Name} {damage} unit!");
                 if (damage > 0)
                 {
@@ -71,6 +69,7 @@ namespace FinalProject
             if (Hp > 0)
             {
                 Console.WriteLine($"{Name} is taken damage {damage} unit, Hp after take damage: {Hp}");
+                Console.WriteLine();
             }
             
             if (Hp <= 0)
