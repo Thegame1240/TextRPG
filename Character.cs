@@ -16,7 +16,9 @@ namespace FinalProject
         public bool IsDead { get; private set; }
         public int WeaponType { get; private set; }
         public int ItemCount { get; private set; }
-        public int playerCurrentSpot;
+        public int MaxHp { get; private set; }
+        public int MaxMana { get; private set; }
+        public int PlayerCurrentSpot;
 
         private Skill[] Skills;
 
@@ -30,17 +32,20 @@ namespace FinalProject
         {
             Name = name;
             Hp = hp;
+            MaxHp = 150;
             Mana = mana;
+            MaxMana = 100;
             Atk = atk;
             Def = def;
             IsDead = false;
             Skills = new Skill[MaxSkill];
             WeaponType = weapontype;
-            Weapon = new Item("null", false, 0,0,0,0,0,false);
-            Head = new Item("null", false, 0,0,0,0,0,false);
-            Armor = new Item("null", false, 0,0,0,0,0,false);
-            Accessory = new Item("null", false, 0,0,0,0,0,false);
+            Weapon = new Item("", false, 0,0,0,0,0,false, 0);
+            Head = new Item("", false, 0,0,0,0,0,false, 0);
+            Armor = new Item("", false, 0,0,0,0,0,false,0);
+            Accessory = new Item("", false, 0,0,0,0,0,false,0);
             Inventory = new List<Item>();
+            ItemCount = 1;
         }
 
         public void AddItem(Item items)
@@ -59,7 +64,7 @@ namespace FinalProject
 
         public void OpenInventory()
         {
-            Console.WriteLine("Your Inventory (To Select Type: 0 - 4):");
+            Console.WriteLine($"Your Inventory {ItemCount}/5 (To Select Type: 0 - 4):");
             foreach (var item in Inventory)
             {
                 Console.WriteLine($"==> {item.Name}");
@@ -73,18 +78,36 @@ namespace FinalProject
                 Console.WriteLine("This item cannot use!");
             }
 
-            if (potion.HealingAmount >= 1)
+            if (potion.HealingAmount >= 1 && Hp < MaxHp)
             {
                 Hp = Hp + potion.HealingAmount;
                 Console.WriteLine($"You used a Health Potion (Health Increases: {potion.HealingAmount})");
                 ItemCount--;
+                if (Hp > MaxHp)
+                {
+                    Hp = MaxHp;
+                }
+                Inventory.Remove(potion);
+            }
+            else
+            {
+                Console.WriteLine("Your HP is already full!!");
             }
 
-            if (potion.ManaAmount >= 1)
+            if (potion.ManaAmount >= 1 && Mana < MaxMana)
             {
                 Mana = Mana + potion.ManaAmount;
                 Console.WriteLine($"You used a Mana Potion (Mana Increases: {potion.ManaAmount})");
                 ItemCount--;
+                if (Mana > MaxMana)
+                {
+                    Mana = MaxMana;
+                }
+                Inventory.Remove(potion);
+            }
+            else
+            {
+                Console.WriteLine("Your Mana is already full!!");
             }
 
         }
@@ -96,33 +119,37 @@ namespace FinalProject
                 Console.WriteLine("You cannot equip this item!!");
             }
             ItemCount--;
+            Inventory.Remove(weapons1);
             return Weapon = weapons1;
         }
         public Item EquipHead(Item head1)
         {
-            if (WeaponType != head1.WeaponType && !head1.Equipable)
+            if (head1.ArmorType != 1)
             {
                 Console.WriteLine("You cannot equip this item!!");
             }
             ItemCount--;
+            Inventory.Remove(head1);
             return Head = head1;
         }
         public Item EquipArmor(Item armor1)
         {
-            if (WeaponType != armor1.WeaponType && !armor1.Equipable)
+            if (armor1.ArmorType != 2)
             {
                 Console.WriteLine("You cannot equip this item!!");
             }
             ItemCount--;
+            Inventory.Remove(armor1);
             return Armor = armor1;
         }
-        public Item EquipAccesory(Item acc1)
+        public Item EquipAccessory(Item acc1)
         {
-            if (WeaponType != acc1.WeaponType && !acc1.Equipable)
+            if (acc1.ArmorType != 3)
             {
                 Console.WriteLine("You cannot equip this item!!");
             }
             ItemCount--;
+            Inventory.Remove(acc1);
             return Accessory = acc1;
         }
         public void SetSkill(Skill[] skills)
@@ -136,12 +163,35 @@ namespace FinalProject
             Skills = skills;
         }
         
+        public void SetRandomAtk()
+        {
+            Atk += Weapon.WeaponDamage + Accessory.WeaponDamage;
+            var minAtk = Atk - 10;
+            var maxAtk = Atk + 10;
+            Random rnd = new Random();
+            Atk = rnd.Next(minAtk, maxAtk);
+            
+            //return Atk;
+        }
+
+        public void SetRandomDef()
+        {
+            Def += Head.ArmorDef + Armor.ArmorDef + Accessory.ArmorDef;
+            var minDef = Def - 10;
+            var maxDef = Def + 10;
+            Random rnd = new Random();
+            Def = rnd.Next(minDef,maxDef);
+            
+            //return Def;
+        }
         public void PhysicalAttack(Enemy opponent)
         {
+            SetRandomAtk();
+            opponent.SetRandomDef();
             var weponDamage = Weapon.WeaponDamage;
             var accessoryDamage = Accessory.WeaponDamage;
             var damage = (Atk + weponDamage + accessoryDamage) - opponent.Def;
-            Console.WriteLine($"{Name} used physical attack to {opponent.Name}!");
+            Console.WriteLine($"{Name} Dealing damage to {opponent.Name} {damage} unit!");
             //Console.WriteLine($"player Damage : {damage}");
             if (damage > 0)
             {
@@ -258,41 +308,41 @@ namespace FinalProject
         public void RandomItemFound()
         {
             // Weapon Type 1 : Sword
-            var weapon04 = new Item("Long Sword", false, 0, 0, 25,0, 1,true);
-            var weapon05 = new Item("Katana", false, 0, 0, 45,0, 1,true);
-            var weapon06 = new Item("Solar Sword", false, 0, 0, 50,0, 1,true);
-            var weapon07 = new Item("Excalibur", false, 0, 0, 70,0, 1,true);
+            var weapon04 = new Item("Long Sword", false, 0, 0, 25,0, 1,true,0);
+            var weapon05 = new Item("Katana", false, 0, 0, 45,0, 1,true,0);
+            var weapon06 = new Item("Solar Sword", false, 0, 0, 50,0, 1,true,0);
+            var weapon07 = new Item("Excalibur", false, 0, 0, 70,0, 1,true,0);
             
             // Weapon Type 2 : Bow
-            var weapon08 = new Item("Composite Bow",false, 0, 0, 30,0, 2,true);
-            var weapon09 = new Item("Cross Bow",false, 0, 0, 50,0, 2,true);
-            var weapon10 = new Item("Big Cross Bow",false, 0, 0, 65,0, 2,true);
-            var weapon11 = new Item("Mystic Bow",false, 0, 0, 75,0, 2,true);
+            var weapon08 = new Item("Composite Bow",false, 0, 0, 30,0, 2,true,0);
+            var weapon09 = new Item("Cross Bow",false, 0, 0, 50,0, 2,true,0);
+            var weapon10 = new Item("Big Cross Bow",false, 0, 0, 65,0, 2,true,0);
+            var weapon11 = new Item("Mystic Bow",false, 0, 0, 75,0, 2,true,0);
             
             // Weapon Type 3 : Rod
-            var weapon12 = new Item("Wand",false, 0, 0, 30,0, 3,true);
-            var weapon13 = new Item("Arc Wand",false, 0, 0, 50,0, 3,true);
-            var weapon14 = new Item("Survivor's Rod",false, 0, 0, 60,0, 3,true);
-            var weapon15 = new Item("Royal Cleric Staff",false, 0, 0, 80,0, 3,true);
+            var weapon12 = new Item("Wand",false, 0, 0, 30,0, 3,true,0);
+            var weapon13 = new Item("Arc Wand",false, 0, 0, 50,0, 3,true,0);
+            var weapon14 = new Item("Survivor's Rod",false, 0, 0, 60,0, 3,true,0);
+            var weapon15 = new Item("Royal Cleric Staff",false, 0, 0, 80,0, 3,true,0);
             
             // Item
-            var hpPotion = new Item("Health Potion", true, 40, 0,0,0,0,false);
-            var manaPotion = new Item("Mana Potion", true, 0, 25,0,0,0,false);
+            var hpPotion = new Item("Health Potion", true, 40, 0,0,0,0,false,0);
+            var manaPotion = new Item("Mana Potion", true, 0, 25,0,0,0,false,0);
             
-            // Head TODO:
-            var head01 = new Item("Helm", false, 0, 0, 0, 10, 0, true);
-            var head02 = new Item("Helm", false, 0, 0, 0, 10, 0, true);
-            var head03 = new Item("Helm", false, 0, 0, 0, 10, 0, true);
+            // Head 
+            var head01 = new Item("Old Helm", false, 0, 0, 0, 10, 0, true,1);
+            var head02 = new Item("Helm", false, 0, 0, 0, 20, 0, true,1);
+            var head03 = new Item("Royal Helm", false, 0, 0, 0, 30, 0, true,1);
             
-            // Armor TODO:
-            var armor01 = new Item("Clothes", false, 0, 0, 0, 20, 0, true);
-            var armor02 = new Item("Clothes", false, 0, 0, 0, 20, 0, true);
-            var armor03 = new Item("Clothes", false, 0, 0, 0, 20, 0, true);
+            // Armor 
+            var armor01 = new Item("Old Mail", false, 0, 0, 0, 20, 0, true,2);
+            var armor02 = new Item("Bone Plate", false, 0, 0, 0, 35, 0, true,2);
+            var armor03 = new Item("Royal Armor", false, 0, 0, 0, 50, 0, true,2);
             
-            // Accessory TODO:
-            var accessory01 = new Item("Ring", false, 0, 0, 5, 5, 0, true);
-            var accessory02 = new Item("Ring", false, 0, 0, 5, 5, 0, true);
-            var accessory03 = new Item("Ring", false, 0, 0, 5, 5, 0, true);
+            // Accessory 
+            var accessory01 = new Item("Ring", false, 0, 0, 0, 5, 0, true,3);
+            var accessory02 = new Item("Necklace", false, 0, 0, 5, 15, 0, true,3);
+            var accessory03 = new Item("Royal Ring", false, 0, 0, 15, 10, 0, true,3);
             
             var itemDrop = hpPotion;
             var itemRandom = new Random();

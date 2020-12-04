@@ -9,9 +9,9 @@ namespace FinalProject
         {
             // Create Character (Objects)
             var char0 = new Character("", 0,0,0,0, 1);
-            var char1 = new Character("Swordman", 150,50,30,20, 1);
-            var char2 = new Character("Archer", 125, 60, 25, 15, 2);
-            var char3 = new Character("Magician", 100, 80, 20, 10, 3);
+            var char1 = new Character("Swordman", 150,100,30,20, 1);
+            var char2 = new Character("Archer", 150, 100, 25, 15, 2);
+            var char3 = new Character("Magician", 150, 100, 20, 10, 3);
             
             // Main Player
             var player = char0;
@@ -21,17 +21,17 @@ namespace FinalProject
             var destination = 25;
             
             // Create Skills
-            var swordSkill01 = new Skill("Bash", 5, 30);
-            var swordSkill02 = new Skill("Pices", 7, 45);
-            var swordSkill03 = new Skill("Smash", 10, 55);
+            var swordSkill01 = new Skill("Bash", 10, 30);
+            var swordSkill02 = new Skill("Pices", 15, 45);
+            var swordSkill03 = new Skill("Smash", 20, 55);
             
-            var archerSkill01 = new Skill("Double Arrow", 5, 35);
-            var archerSkill02 = new Skill("Arrow Shower", 8, 40);
-            var archerSkill03 = new Skill("Aimed bolt", 12, 55);
+            var archerSkill01 = new Skill("Double Arrow", 10, 35);
+            var archerSkill02 = new Skill("Arrow Shower", 15, 40);
+            var archerSkill03 = new Skill("Aimed bolt", 20, 55);
             
-            var magicSkill01 = new Skill("Fire", 20, 60);
-            var magicSkill02 = new Skill("Ice", 15, 45);
-            var magicSkill03 = new Skill("Wind", 5, 30);
+            var magicSkill01 = new Skill("Fire", 15, 45);
+            var magicSkill02 = new Skill("Ice", 20, 60);
+            var magicSkill03 = new Skill("Wind", 25, 80);
             
             // Set Skills
             char1.SetSkill(new [] {swordSkill01, swordSkill02, swordSkill03});
@@ -39,15 +39,15 @@ namespace FinalProject
             char3.SetSkill(new []{magicSkill01, magicSkill02, magicSkill03});
             
             // Create Item
-            var hpPotion = new Item("Health Potion", true, 40, 0,0,0,0,false);
-            var manaPotion = new Item("Mana Potion", true, 0, 25,0,0,0,false);
+            var hpPotion = new Item("Health Potion", true, 40, 0,0,0,0,false,0);
+            var manaPotion = new Item("Mana Potion", true, 0, 25,0,0,0,false,0);
             
             // Create Wepaon
-            var weapon01 = new Item("Sword", false, 0, 0, 20,0, 1,true);
+            var weapon01 = new Item("Sword", false, 0, 0, 20,0, 1,true,0);
             
-            var weapon02 = new Item("Bow",false, 0, 0, 15,0, 2,true);
+            var weapon02 = new Item("Bow",false, 0, 0, 20,0, 2,true,0);
             
-            var weapon03 = new Item("Rod",false, 0, 0, 15,0, 3,true);
+            var weapon03 = new Item("Rod",false, 0, 0, 15,0, 3,true,0);
             
             // Crate Enemy
             var enemy01 = new Enemy("Goblin Axe", 100, 0, 10, 10, "Demi-Human");
@@ -130,12 +130,12 @@ namespace FinalProject
             }
             
             // Main Parts //
-            while (playerSafe && player.playerCurrentSpot != destination)
+            while (playerSafe && player.PlayerCurrentSpot != destination)
             {
                 PlayerOption(player,enemy01);
             }
 
-            if (player.playerCurrentSpot == destination) // To Final Bosss
+            if (player.PlayerCurrentSpot == destination) // To Final Bosss
             {
                 Console.WriteLine("The Final Boss is Coming !"); // TODO: Final Boss 
                 FinalBoss(player);
@@ -155,7 +155,7 @@ namespace FinalProject
                 Console.Clear();
             }
 
-            static void FinalBoss(Character player) // When player found enemy This function will call
+            static void FinalBoss(Character player) // TODO:
             {
                 var finalBoss = new Boss("Goblin Lord", 500, 150, 100, 60, "Boss");
                 Console.WriteLine(
@@ -165,8 +165,7 @@ namespace FinalProject
                 {
                     Console.WriteLine($"=== PLAYER STATUS === \n== Hp: {player.Hp} == MP: {player.Mana} ==");
                     Console.WriteLine($"=== {finalBoss.Name} STATUS === \n== Hp: {finalBoss.Hp} ==");
-                    Console.WriteLine(
-                        "==== Chose your action ====\n 1.Normal attack \n 2.Use skill \n 3.Use item \n 4.Wait for Action \n 5.Try Escape");
+                    Console.WriteLine("==== Chose your action ====\n 1.Normal attack \n 2.Use skill \n 3.Use item \n 4.Wait for Action \n 5.Try Escape");
                     var playerAction = Console.ReadLine();
 
                     if (playerAction == "1") // Normal Attack
@@ -186,7 +185,6 @@ namespace FinalProject
                         var playerItemSelectedInCombat = Convert.ToInt32(Console.ReadLine());
                         var itemSelectInCombat = player.Inventory[playerItemSelectedInCombat];
                         player.UseItem(itemSelectInCombat);
-                        player.Inventory.Remove(itemSelectInCombat);
                     }
                     else if (playerAction == "4") // Wait of Action
                     {
@@ -211,12 +209,13 @@ namespace FinalProject
 
             static void PlayerOption(Character player, Enemy enemy01)
             {
-                Console.WriteLine($"=== Current Player Status === \n== HP: {player.Hp} MP: {player.Mana} ==\n== PlayerSpot: {player.playerCurrentSpot}/25 ==");
-                Console.WriteLine("Please Select your action ! \n 1. Walk \n 2. Open Inventory \n 3. Open Menu");
+                Console.WriteLine();
+                Console.WriteLine($"=== Current Player Status === \n== HP: {player.Hp} MP: {player.Mana} ==\n== PlayerSpot: {player.PlayerCurrentSpot}/25 ==");
+                Console.WriteLine("Please Select your action ! \n 1. Walk \n 2. Open Inventory \n 3. Open Status \n 4. Open Menu");
                 var playerOption = Console.ReadLine();
                 if (playerOption == "1") // Walk 1 Unit
                 {
-                    player.playerCurrentSpot++;
+                    player.PlayerCurrentSpot++;
                     var random = new Random();
                     var randomEvent = random.Next(3);
                     if (randomEvent == 0) //Found Enemy
@@ -227,8 +226,9 @@ namespace FinalProject
 
                         while (player.Hp > 0 && currentEnemy.Hp > 0)
                         {
+                            Console.WriteLine();
                             Console.WriteLine($"=== PLAYER STATUS === \n== Hp: {player.Hp} == MP: {player.Mana} ==");
-                            Console.WriteLine($"=== {currentEnemy.Name} STATUS === \n== Hp: {currentEnemy.Hp} ==");
+                            Console.WriteLine($"=== {currentEnemy.Name} STATUS === \n=== Hp: {currentEnemy.Hp} ===");
                             Console.WriteLine("==== Chose your action ====\n 1.Normal attack \n 2.Use skill \n 3.Use item \n 4.Wait for Action \n 5.Try Escape");
                             var playerAction = Console.ReadLine();
                             
@@ -249,7 +249,6 @@ namespace FinalProject
                                 var playerItemSelectedInCombat = Convert.ToInt32(Console.ReadLine());
                                 var itemSelectInCombat = player.Inventory[playerItemSelectedInCombat];
                                 player.UseItem(itemSelectInCombat);
-                                player.Inventory.Remove(itemSelectInCombat);
                             }
                             else if (playerAction == "4") // Wait of Action
                             {
@@ -260,7 +259,7 @@ namespace FinalProject
                                 if (escapeChance == 1)
                                 {
                                     Console.WriteLine("Escape Success!");
-                                    PlayerOption(player, currentEnemy);
+                                    PlayerOption(player, enemy01);
                                 }
                                 else
                                 {
@@ -268,15 +267,31 @@ namespace FinalProject
                                 }
                             }
                         }
+
+                        if (currentEnemy.IsDead)
+                        {
+                            if (currentEnemy.Dropitem)
+                            {
+                                player.AddItem(currentEnemy.ItemDrop);
+                                Console.WriteLine($"{currentEnemy.Name} Drop item {currentEnemy.ItemDrop.Name} 1ea.!");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"{currentEnemy.Name} doesn't drop anything");
+                            }
+                            PlayerOption(player,enemy01);
+                        }
                     }
                     else if (randomEvent == 1) //Found Item
                     {
                         // Random item Drop !!
                         player.RandomItemFound();
+                        PlayerOption(player, enemy01);
                     }
                     else if (randomEvent == 2) //Safely arrive
                     {
                         Console.WriteLine("You found nothing!, You are safe!");
+                        PlayerOption(player,enemy01);
                     }
                     
                 }else if (playerOption == "2") // Open Inventory //
@@ -287,7 +302,7 @@ namespace FinalProject
                     var playerItemSelected = Convert.ToInt32(Console.ReadLine());
                     var itemSelect = player.Inventory[playerItemSelected];
 
-                    Console.WriteLine("=== Select your action ===\n 1.Use item \n 2.Equip item \n 3.Drop item");
+                    Console.WriteLine("=== Select your action ===\n 1.Use item \n 2.Equip item \n 3.Drop item \n 4.Go Back");
                     var playerInventoryAction = Convert.ToInt32(Console.ReadLine());
                     
                     if (playerInventoryAction == 1)// Use item
@@ -295,38 +310,70 @@ namespace FinalProject
                         if (itemSelect.useable)
                         {
                             player.UseItem(itemSelect);
-                            player.Inventory.Remove(itemSelect);
                         }
                         else
                         {
                             Console.WriteLine("This item can't be use!!");
                         }
-                        
+                        PlayerOption(player,enemy01);
                     }
                     else if (playerInventoryAction == 2) // Equip item
                     {
-                        if (itemSelect.Equipable && player.WeaponType == itemSelect.WeaponType)
+                        if (itemSelect.Equipable && player.WeaponType == itemSelect.WeaponType) // Check Weapon
                         {
                             player.EquipWeapon(itemSelect);
                             Console.WriteLine($"You have equip {itemSelect.Name}");
-                            player.Inventory.Remove(itemSelect);
+                        }
+                        else if (itemSelect.Equipable && itemSelect.ArmorType == 1) // Check Head
+                        {
+                            player.EquipHead(itemSelect);
+                            Console.WriteLine($"You have equip {itemSelect.Name}");
+                        }
+                        else if (itemSelect.Equipable && itemSelect.ArmorType == 2) // Check Armor
+                        {
+                            player.EquipArmor(itemSelect);
+                            Console.WriteLine($"You have equip {itemSelect.Name}");
+                        }
+                        else if (itemSelect.Equipable && itemSelect.ArmorType == 3) // Check Accessory
+                        {
+                            player.EquipAccessory(itemSelect);
+                            Console.WriteLine($"You have equip {itemSelect.Name}");
                         }
                         else
                         {
                             Console.WriteLine("You cannot equip this item!!");
                         }
+                        PlayerOption(player,enemy01);
                     }
                     else if (playerInventoryAction == 3) // Drop item
                     {
                         player.Inventory.Remove(itemSelect);
                         Console.WriteLine($"{itemSelect.Name} has remove.");
+                        PlayerOption(player,enemy01);
+                    }
+                    else if (playerInventoryAction == 4) // Go back
+                    {
+                        PlayerOption(player,enemy01);
                     }
                     else
                     {
                         Console.WriteLine("Something went wrong! Please try again...");
                     }
                 }
-                else if (playerOption == "3") // Open Menu //
+                else if (playerOption == "3") // Check Status
+                {
+                    Console.WriteLine($"Name {player.Name}");
+                    Console.WriteLine($"HP: {player.Hp} MP: {player.Mana}");
+                    Console.WriteLine($"Base Atk: {player.Atk} Base Def: {player.Def}");
+                    Console.WriteLine($"Current Weapon: {player.Weapon.Name}");
+                    Console.WriteLine($"Head: {player.Head.Name}");
+                    Console.WriteLine($"Armor: {player.Armor.Name}");
+                    Console.WriteLine($"Accessory: {player.Accessory.Name}");
+                    Console.WriteLine("Press any key to go back...");
+                    Console.ReadKey();
+                    PlayerOption(player,enemy01);
+                }
+                else if (playerOption == "4") // Open Menu //
                 {
                     Console.WriteLine("===== Menu ===== \n 1: Resume (Warring: This will clear the Console) \n 2: Quit");
                     var openMenuOption = Console.ReadLine();
@@ -334,6 +381,7 @@ namespace FinalProject
                     if (openMenuOption == "1") // resume
                     {
                         Console.Clear();
+                        PlayerOption(player,enemy01);
                     }
                     else if (openMenuOption == "2") // quit
                     {

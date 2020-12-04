@@ -1,3 +1,5 @@
+using System;
+
 namespace FinalProject
 {
     public class Item
@@ -12,7 +14,8 @@ namespace FinalProject
         public int ArmorDef { get; private set; }
         public int WeaponType { get; private set; }
         public bool Equipable { get; private set; }
-        public Item(string name, bool useable, int healingAmount, int manaAmount,int weaponDamage, int armorDef, int weaponType, bool equipable)
+        public int ArmorType { get; private set; }
+        public Item(string name, bool useable, int healingAmount, int manaAmount,int weaponDamage, int armorDef, int weaponType, bool equipable, int armorType)
         {
             Name = name;
             this.useable = useable;
@@ -22,6 +25,7 @@ namespace FinalProject
             ArmorDef = armorDef;
             WeaponType = weaponType;
             Equipable = equipable;
+            ArmorType = armorType;
         }
 
         public void RandomItemDrop()
