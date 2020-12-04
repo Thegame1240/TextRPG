@@ -7,7 +7,7 @@ namespace FinalProject
     public class Character
     {
         private const int MaxSkill = 3;
-        private const int MaxInventory = 6;
+        private const int MaxInventory = 5;
         public string Name { get; private set; }
         public int Hp { get; private set; }
         public int Mana { get; private set; }
@@ -34,7 +34,7 @@ namespace FinalProject
         {
             Name = name;
             Hp = hp;
-            MaxHp = 150;
+            MaxHp = 200;
             Mana = mana;
             MaxMana = 100;
             Atk = atk;
@@ -46,18 +46,19 @@ namespace FinalProject
             Head = new Item("", false, 0,0,0,0,0,false, 0);
             Armor = new Item("", false, 0,0,0,0,0,false,0);
             Accessory = new Item("", false, 0,0,0,0,0,false,0);
-            Inventory = new List<Item>();
+            Inventory = new List<Item>(MaxInventory);
             ItemCount = 1;
             BaseAtk = Atk + Weapon.WeaponDamage + Accessory.WeaponDamage;
             BaseDef = Def + Head.ArmorDef + Armor.ArmorDef + Accessory.ArmorDef;
+            PlayerCurrentSpot = 0;
         }
 
         public void AddItem(Item items)
         {
-            ItemCount++;
-            if (ItemCount > 0 && ItemCount < MaxInventory)
+            if (ItemCount >= 0 && ItemCount <= MaxInventory)
             {
                 Inventory.Add(items);
+                ItemCount++;
                 Console.WriteLine($"You get {items.Name} 1 ea.");
             }
             else
@@ -68,7 +69,7 @@ namespace FinalProject
 
         public void OpenInventory()
         {
-            Console.WriteLine($"Your Inventory {ItemCount}/5 (To Select Type: 0 - 4):");
+            Console.WriteLine($"Your Inventory {ItemCount}/{MaxInventory} (To Select Type: 0 - 4):");
             foreach (var item in Inventory)
             {
                 Console.WriteLine($"==> {item.Name}");
@@ -86,14 +87,14 @@ namespace FinalProject
             {
                 Hp = Hp + potion.HealingAmount;
                 Console.WriteLine($"You used a Health Potion (Health Increases: {potion.HealingAmount})");
-                ItemCount--;
                 if (Hp > MaxHp)
                 {
                     Hp = MaxHp;
                 }
                 Inventory.Remove(potion);
+                ItemCount--;
             }
-            else
+            else if (Hp == MaxHp)
             {
                 Console.WriteLine("Your HP is already full!!");
             }
@@ -102,21 +103,21 @@ namespace FinalProject
             {
                 Mana = Mana + potion.ManaAmount;
                 Console.WriteLine($"You used a Mana Potion (Mana Increases: {potion.ManaAmount})");
-                ItemCount--;
                 if (Mana > MaxMana)
                 {
                     Mana = MaxMana;
                 }
                 Inventory.Remove(potion);
+                ItemCount--;
             }
-            else
+            else if (Mana == MaxMana)
             {
                 Console.WriteLine("Your Mana is already full!!");
             }
 
         }
 
-        public Item EquipWeapon(Item weapons1)
+        public void EquipWeapon(Item weapons1)
         {
             if (WeaponType != weapons1.WeaponType && !weapons1.Equipable)
             {
@@ -124,19 +125,20 @@ namespace FinalProject
             }
             ItemCount--;
             Inventory.Remove(weapons1);
-            return Weapon = weapons1;
+            Weapon = weapons1;
         }
-        public Item EquipHead(Item head1)
+        public void EquipHead(Item head1)
         {
             if (head1.ArmorType != 1)
             {
                 Console.WriteLine("You cannot equip this item!!");
             }
-            ItemCount--;
+            
             Inventory.Remove(head1);
-            return Head = head1;
+            ItemCount--;
+            Head = head1;
         }
-        public Item EquipArmor(Item armor1)
+        public void EquipArmor(Item armor1)
         {
             if (armor1.ArmorType != 2)
             {
@@ -144,9 +146,9 @@ namespace FinalProject
             }
             ItemCount--;
             Inventory.Remove(armor1);
-            return Armor = armor1;
+            Armor = armor1;
         }
-        public Item EquipAccessory(Item acc1)
+        public void EquipAccessory(Item acc1)
         {
             if (acc1.ArmorType != 3)
             {
@@ -154,7 +156,7 @@ namespace FinalProject
             }
             ItemCount--;
             Inventory.Remove(acc1);
-            return Accessory = acc1;
+            Accessory = acc1;
         }
         public void SetSkill(Skill[] skills)
         {
@@ -203,7 +205,7 @@ namespace FinalProject
 
         public void SkillAttack(Enemy opponent)
         {
-            Console.WriteLine($"Select your skill \n 0.{Skills[0].Name} (Mana: {Skills[0].ManaConsume}) \n 1.{Skills[1].Name} (Mana: {Skills[1].ManaConsume}) \n 2. {Skills[2].Name} (Mana: {Skills[2].ManaConsume})");
+            Console.WriteLine($"Select your skill \n 0.{Skills[0].Name} (Mana: {Skills[0].ManaConsume}) \n 1.{Skills[1].Name} (Mana: {Skills[1].ManaConsume}) \n 2.{Skills[2].Name} (Mana: {Skills[2].ManaConsume})");
             var skillNumber = Convert.ToInt32(Console.ReadLine());
             var selectedSkill = Skills[skillNumber];
             var calculateDamage = (Accessory.WeaponDamage + Weapon.WeaponDamage) / 3;

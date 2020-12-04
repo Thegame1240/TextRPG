@@ -5,20 +5,19 @@ namespace FinalProject
     class Program
     {
         public static bool playerSafe = true;
+        public static int destination = 25;
+         
         static void Main(string[] args)
         {
             // Create Character (Objects)
             var char0 = new Character("", 0,0,0,0, 1);
-            var char1 = new Character("Swordman", 150,100,30,20, 1);
-            var char2 = new Character("Archer", 150, 100, 25, 15, 2);
-            var char3 = new Character("Magician", 150, 100, 20, 10, 3);
+            var char1 = new Character("Swordman", 200,100,30,20, 1);
+            var char2 = new Character("Archer", 200, 100, 25, 15, 2);
+            var char3 = new Character("Magician", 200, 100, 20, 10, 3);
             
             // Main Player
             var player = char0;
             bool characterSelected = false;
-            
-            // Set Destination 
-            var destination = 25;
             
             // Create Skills
             var swordSkill01 = new Skill("Bash", 10, 30);
@@ -174,8 +173,17 @@ namespace FinalProject
 
             static void FinalBoss(Character player) // FinalBossArrive
             {
-                var finalBoss = new Boss("Goblin Lord", 500, 150, 100, 60, "Boss");
-                Console.WriteLine($"{finalBoss.Name} Well done Adventure! You come along here \n Now it's time to Die!!");
+                // Create Boss
+                var finalBoss = new Boss("Goblin Lord", 350, 100, 65, 75, "Boss");
+                // Boss Skills
+                var bossSkill01 = new Skill("Stormgust",20, 70);
+                var bossSkill02 = new Skill("Thunder Storm", 25, 80);
+                var bossSKill03 = new Skill("Meteor Storm", 50, 90);
+                // Set Boss Skills
+                finalBoss.SetBossSkill(new []{bossSkill01,bossSkill02,bossSKill03});
+                
+                Console.Clear();
+                Console.WriteLine($"{finalBoss.Name}: Well done Adventure! You came along here \n Now it's time to Die!!");
 
                 while (player.Hp > 0 && finalBoss.Hp > 0)
                 {
@@ -187,12 +195,18 @@ namespace FinalProject
                     if (playerAction == "1") // Normal Attack
                     {
                         player.PhysicalAttack(finalBoss);
-                        finalBoss.Attack(player);
+                        if (!finalBoss.IsDead)
+                        {
+                            finalBoss.Attack(player);
+                        }
                     }
                     else if (playerAction == "2") // Use Skill
                     {
                         player.SkillAttack(finalBoss);
-                        finalBoss.Attack(player);
+                        if (!finalBoss.IsDead)
+                        {
+                            finalBoss.Attack(player);
+                        }
                     }
                     else if (playerAction == "3") // Use Item
                     {
@@ -275,12 +289,19 @@ namespace FinalProject
                             }
                         }
 
-                        if (currentEnemy.IsDead)
+                        if (currentEnemy.IsDead && player.PlayerCurrentSpot != destination)
                         {
                             if (currentEnemy.Dropitem)
                             {
-                                player.AddItem(currentEnemy.ItemDrop);
-                                Console.WriteLine($"{currentEnemy.Name} Drop item {currentEnemy.ItemDrop.Name} 1ea.!");
+                                if (player.ItemCount >= player.Inventory.Count)
+                                {
+                                    player.AddItem(currentEnemy.ItemDrop);
+                                    Console.WriteLine($"{currentEnemy.Name} Drop item {currentEnemy.ItemDrop.Name} 1ea.!");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Your bag is full!!");
+                                }
                             }
                             else
                             {
@@ -288,16 +309,40 @@ namespace FinalProject
                             }
                             PlayerOption(player,enemy01);
                         }
+                        
+                        if (player.PlayerCurrentSpot >= destination)
+                        {
+                            playerSafe = false;
+                            FinalBoss(player);
+                        }
                     }
                     else if (randomEvent == 1) //Found Item
                     {
                         // Random item Drop !!
-                        player.RandomItemFound();
+                        if (player.ItemCount >= 0 && player.ItemCount <= 5)
+                        {
+                            player.RandomItemFound();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Item drop here but your bag is full!");
+                        }
+                        
+                        if (player.PlayerCurrentSpot >= destination)
+                        {
+                            playerSafe = false;
+                            FinalBoss(player);
+                        }
                         PlayerOption(player, enemy01);
                     }
                     else if (randomEvent == 2) //Safely arrive
                     {
                         Console.WriteLine("You found nothing!, You are safe!");
+                        if (player.PlayerCurrentSpot >= destination)
+                        {
+                            playerSafe = false;
+                            FinalBoss(player);
+                        }
                         PlayerOption(player,enemy01);
                     }
                     
@@ -402,6 +447,7 @@ namespace FinalProject
 
             static void EndGame()
             {
+                Console.Clear();
                 Console.WriteLine("================ This Game is the Final Project of Subject GI161 ==================");
                 Console.WriteLine("=====                              Created by                                 =====");
                 Console.WriteLine("=====  ID: 1620700656 Name: Pongsakorn Soontorn        Section: 2521  No: 3   =====");

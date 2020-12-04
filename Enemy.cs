@@ -7,7 +7,7 @@ namespace FinalProject
         // Enemy 6 types Include Boss
         public string Name { get; private set; }
         public int Hp { get; private set; }
-        public int Mana { get; private set; }
+        public int Mana { get; protected set; }
         public int Atk { get; private set; }
         public int Def { get; private set; }
         public string eType { get; private set; }
@@ -26,7 +26,7 @@ namespace FinalProject
             ItemDrop = new Item("null",false,0,0,0,0,0,false,0);
         }
         
-        public int SetRandomAtk()
+        public virtual int SetRandomAtk()
         {
             var damage = Atk;
             var minAtk = damage - 5;
@@ -36,7 +36,7 @@ namespace FinalProject
             return damage = rndDamage;
         }
 
-        public int SetRandomDef()
+        public virtual int SetRandomDef()
         {
             var defend = Def;
             var minDef = defend - 10;
@@ -93,11 +93,11 @@ namespace FinalProject
 
         public Enemy RandomEnemy(Character character)
         {
-            var enemy01 = new Enemy("Goblin Axe", 100, 0, 10, 10, "Demi-Human");
-            var enemy02 = new Enemy("Goblin Hammer", 150, 0, 15, 20, "Demi-Human");
-            var enemy03 = new Enemy("Goblin Archer", 100, 0, 20, 10, "Demi-Human");
-            var enemy04 = new Enemy("Wolf", 80, 0, 55, 30, "Beast");
-            var enemy05 = new Enemy("Goblin Leader", 250, 0, 70, 65, "Demi-Human");
+            var enemy01 = new Enemy("Goblin Axe", 150, 0, 25, 20, "Demi-Human");
+            var enemy02 = new Enemy("Goblin Hammer", 155, 0, 35, 30, "Demi-Human");
+            var enemy03 = new Enemy("Goblin Archer", 150, 0, 45, 25, "Demi-Human");
+            var enemy04 = new Enemy("Wolf", 100, 0, 55, 25, "Beast");
+            var enemy05 = new Enemy("Goblin Leader", 200, 0, 60, 50, "Demi-Human");
             
             Console.WriteLine("You have found the enemy!");
             // Random Enemy
