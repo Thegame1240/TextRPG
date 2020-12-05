@@ -160,43 +160,43 @@ namespace FinalProject
         public void EnemyDropItem()
         {
             // Weapon Type 1 : Sword
-            var weapon04 = new Item("Long Sword", false, 0, 0, 25,0, 1,true,0);
-            var weapon05 = new Item("Katana", false, 0, 0, 45,0, 1,true,0);
-            var weapon06 = new Item("Solar Sword", false, 0, 0, 50,0, 1,true,0);
-            var weapon07 = new Item("Excalibur", false, 0, 0, 70,0, 1,true,0);
+            IItem weapon04 = new Item("Long Sword", false, 0, 0, 25,0, 1,true,0);
+            IItem weapon05 = new Item("Katana", false, 0, 0, 45,0, 1,true,0);
+            IItem weapon06 = new Item("Solar Sword", false, 0, 0, 50,0, 1,true,0);
+            IItem weapon07 = new Item("Excalibur", false, 0, 0, 70,0, 1,true,0);
             
             // Weapon Type 2 : Bow
-            var weapon08 = new Item("Composite Bow",false, 0, 0, 30,0, 2,true,0);
-            var weapon09 = new Item("Cross Bow",false, 0, 0, 50,0, 2,true,0);
-            var weapon10 = new Item("Big Cross Bow",false, 0, 0, 65,0, 2,true,0);
-            var weapon11 = new Item("Mystic Bow",false, 0, 0, 75,0, 2,true,0);
+            IItem weapon08 = new Item("Composite Bow",false, 0, 0, 30,0, 2,true,0);
+            IItem weapon09 = new Item("Cross Bow",false, 0, 0, 50,0, 2,true,0);
+            IItem weapon10 = new Item("Big Cross Bow",false, 0, 0, 65,0, 2,true,0);
+            IItem weapon11 = new Item("Mystic Bow",false, 0, 0, 75,0, 2,true,0);
             
             // Weapon Type 3 : Rod
-            var weapon12 = new Item("Wand",false, 0, 0, 30,0, 3,true,0);
-            var weapon13 = new Item("Arc Wand",false, 0, 0, 50,0, 3,true,0);
-            var weapon14 = new Item("Survivor's Rod",false, 0, 0, 60,0, 3,true,0);
-            var weapon15 = new Item("Royal Cleric Staff",false, 0, 0, 80,0, 3,true,0);
+            IItem weapon12 = new Item("Wand",false, 0, 0, 30,0, 3,true,0);
+            IItem weapon13 = new Item("Arc Wand",false, 0, 0, 50,0, 3,true,0);
+            IItem weapon14 = new Item("Survivor's Rod",false, 0, 0, 60,0, 3,true,0);
+            IItem weapon15 = new Item("Royal Cleric Staff",false, 0, 0, 80,0, 3,true,0);
             
             // Item
-            var hpPotion = new Item("Health Potion", true, 40, 0,0,0,0,false,0);
-            var manaPotion = new Item("Mana Potion", true, 0, 25,0,0,0,false,0);
+            IItem hpPotion = new Item("Health Potion", true, 40, 0,0,0,0,false,0);
+            IItem manaPotion = new Item("Mana Potion", true, 0, 25,0,0,0,false,0);
             
             // Head 
-            var head01 = new Item("Old Helm", false, 0, 0, 0, 10, 0, true,1);
-            var head02 = new Item("Helm", false, 0, 0, 0, 20, 0, true,1);
-            var head03 = new Item("Royal Helm", false, 0, 0, 0, 30, 0, true,1);
+            IItem head01 = new Item("Old Helm", false, 0, 0, 0, 10, 0, true,1);
+            IItem head02 = new Item("Helm", false, 0, 0, 0, 20, 0, true,1);
+            IItem head03 = new Item("Royal Helm", false, 0, 0, 0, 30, 0, true,1);
             
             // Armor 
-            var armor01 = new Item("Old Mail", false, 0, 0, 0, 20, 0, true,2);
-            var armor02 = new Item("Bone Plate", false, 0, 0, 0, 35, 0, true,2);
-            var armor03 = new Item("Royal Armor", false, 0, 0, 0, 50, 0, true,2);
+            IItem armor01 = new Item("Old Mail", false, 0, 0, 0, 20, 0, true,2);
+            IItem armor02 = new Item("Bone Plate", false, 0, 0, 0, 35, 0, true,2);
+            IItem armor03 = new Item("Royal Armor", false, 0, 0, 0, 50, 0, true,2);
             
             // Accessory 
-            var accessory01 = new Item("Ring", false, 0, 0, 0, 5, 0, true,3);
-            var accessory02 = new Item("Necklace", false, 0, 0, 5, 15, 0, true,3);
-            var accessory03 = new Item("Royal Ring", false, 0, 0, 15, 10, 0, true,3);
+            IItem accessory01 = new Item("Ring", false, 0, 0, 0, 5, 0, true,3);
+            IItem accessory02 = new Item("Necklace", false, 0, 0, 5, 15, 0, true,3);
+            IItem accessory03 = new Item("Royal Ring", false, 0, 0, 15, 10, 0, true,3);
             
-            var itemDrop = hpPotion;
+            IItem itemDrop = hpPotion;
             var itemRandom = new Random();
             double numberTypeDrop = itemRandom.Next(0,101);
             
@@ -302,7 +302,7 @@ namespace FinalProject
                 }
             }
 
-            ItemDrop = itemDrop;
+            ItemDrop = itemDrop as Item;
         }
     }
 }
