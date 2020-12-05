@@ -18,8 +18,6 @@ namespace FinalProject
         public int ItemCount { get; private set; }
         public int MaxHp { get; private set; }
         public int MaxMana { get; private set; }
-        public int BaseAtk { get; private set; }
-        public int BaseDef { get; private set; }
         public int PlayerCurrentSpot;
 
         private Skill[] Skills;
@@ -48,17 +46,15 @@ namespace FinalProject
             Accessory = new Item("", false, 0,0,0,0,0,false,0);
             Inventory = new List<Item>(MaxInventory);
             ItemCount = 1;
-            BaseAtk = Atk + Weapon.WeaponDamage + Accessory.WeaponDamage;
-            BaseDef = Def + Head.ArmorDef + Armor.ArmorDef + Accessory.ArmorDef;
             PlayerCurrentSpot = 0;
         }
 
         public void AddItem(Item items)
         {
-            if (ItemCount >= 0 && ItemCount <= MaxInventory)
+            if (ItemCount < MaxInventory && Inventory.Capacity <= MaxInventory)
             {
-                Inventory.Add(items);
                 ItemCount++;
+                Inventory.Add(items);
                 Console.WriteLine($"You get {items.Name} 1 ea.");
             }
             else
@@ -126,6 +122,7 @@ namespace FinalProject
             ItemCount--;
             Inventory.Remove(weapons1);
             Weapon = weapons1;
+            Atk += weapons1.getItemDamage();
         }
         public void EquipHead(Item head1)
         {
@@ -137,6 +134,7 @@ namespace FinalProject
             Inventory.Remove(head1);
             ItemCount--;
             Head = head1;
+            Def += head1.getItemDef();
         }
         public void EquipArmor(Item armor1)
         {
@@ -147,6 +145,7 @@ namespace FinalProject
             ItemCount--;
             Inventory.Remove(armor1);
             Armor = armor1;
+            Def += armor1.getItemDef();
         }
         public void EquipAccessory(Item acc1)
         {
@@ -157,6 +156,8 @@ namespace FinalProject
             ItemCount--;
             Inventory.Remove(acc1);
             Accessory = acc1;
+            Def += acc1.getItemDef();
+            Atk += acc1.getItemDamage();
         }
         public void SetSkill(Skill[] skills)
         {
@@ -172,7 +173,7 @@ namespace FinalProject
         public int SetRandomAtk()
         {
             var damage = Atk + Weapon.WeaponDamage + Accessory.WeaponDamage;
-            var minAtk = damage - 10;
+            var minAtk = damage - 20;
             var maxAtk = damage + 10;
             Random rnd = new Random();
             var rndAtk = rnd.Next(minAtk, maxAtk);
@@ -182,8 +183,8 @@ namespace FinalProject
         public int SetRandomDef()
         {
             var defend = Def + Head.ArmorDef + Armor.ArmorDef + Accessory.ArmorDef;
-            var minDef = defend - 10;
-            var maxDef = defend + 10;
+            var minDef = defend - 20;
+            var maxDef = defend;
             Random rnd = new Random();
             var rndDef = rnd.Next(minDef,maxDef);
             return defend = rndDef;
@@ -297,6 +298,7 @@ namespace FinalProject
             Console.WriteLine($"You are Dead! Game is ending!");
             Console.WriteLine("Press any key to quit...");
             Console.ReadKey();
+            Environment.Exit(0);
         }
 
         public string ChangeName()

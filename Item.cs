@@ -1,8 +1,6 @@
-using System;
-
 namespace FinalProject
 {
-    public class Item
+    public class Item : IItem
     {
         // 2 Types Hp and Mp
         public string Name { get; private set; }
@@ -28,9 +26,14 @@ namespace FinalProject
             ArmorType = armorType;
         }
 
-        public void RandomItemDrop()
+        public int getItemDamage()
         {
-            
+            return WeaponDamage;
+        }
+
+        public int getItemDef()
+        {
+            return ArmorDef;
         }
     }
 }

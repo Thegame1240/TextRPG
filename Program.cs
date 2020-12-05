@@ -416,7 +416,7 @@ namespace FinalProject
                 {
                     Console.WriteLine($"=== Name: {player.Name} ===");
                     Console.WriteLine($"=== HP: {player.Hp} MP: {player.Mana} ===");
-                    Console.WriteLine($"=== Base Atk: {player.BaseAtk} Base Def: {player.BaseDef} ===");
+                    Console.WriteLine($"=== Base Atk: {player.Atk} Base Def: {player.Def} ===");
                     Console.WriteLine($"=== Current Weapon: {player.Weapon.Name} ===");
                     Console.WriteLine($"=== Head: {player.Head.Name} ===");
                     Console.WriteLine($"=== Armor: {player.Armor.Name} ===");

@@ -23,7 +23,7 @@ namespace FinalProject
             Def = def;
             eType = etype;
             Dropitem = false;
-            ItemDrop = new Item("null",false,0,0,0,0,0,false,0);
+            ItemDrop = new Item("",false,0,0,0,0,0,false,0);
         }
         
         public virtual int SetRandomAtk()
@@ -39,8 +39,8 @@ namespace FinalProject
         public virtual int SetRandomDef()
         {
             var defend = Def;
-            var minDef = defend - 10;
-            var maxDef = defend + 10;
+            var minDef = defend - 15;
+            var maxDef = defend;
             Random rnd = new Random();
             var rndDef = rnd.Next(minDef,maxDef);
             return defend = rndDef;
@@ -93,10 +93,10 @@ namespace FinalProject
 
         public Enemy RandomEnemy(Character character)
         {
-            var enemy01 = new Enemy("Goblin Axe", 150, 0, 25, 20, "Demi-Human");
-            var enemy02 = new Enemy("Goblin Hammer", 155, 0, 35, 30, "Demi-Human");
-            var enemy03 = new Enemy("Goblin Archer", 150, 0, 45, 25, "Demi-Human");
-            var enemy04 = new Enemy("Wolf", 100, 0, 55, 25, "Beast");
+            var enemy01 = new Enemy("Goblin Axe", 150, 0, 35, 35, "Demi-Human");
+            var enemy02 = new Enemy("Goblin Hammer", 155, 0, 30, 40, "Demi-Human");
+            var enemy03 = new Enemy("Goblin Archer", 150, 0, 45, 30, "Demi-Human");
+            var enemy04 = new Enemy("Wolf", 100, 0, 55, 30, "Beast");
             var enemy05 = new Enemy("Goblin Leader", 200, 0, 60, 50, "Demi-Human");
             
             Console.WriteLine("You have found the enemy!");

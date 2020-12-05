@@ -12,10 +12,5 @@ namespace FinalProject
             ManaConsume = manaConsume;
             Damage = damage;
         }
-
-        public string getName()
-        {
-            return Name;
-        }
     }
 }
